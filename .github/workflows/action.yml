@@ -1,0 +1,57 @@
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+on:
+  push:
+    branches:
+      - !main
+      - 'feature_version1'
+      paths:
+      - '**.js'
+      
+
+    branches-ignore:    
+      - 'mona/octocat'
+      - 'releases/**-alpha'
+
+      tags:        
+      - v2
+      - v1.*
+
+      name: Deploy Code
+
+on:
+  push:
+    branches:
+      - main # You can adjust the branch name as needed
+
+jobs:
+  deploy_regional_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout regional_repo
+      uses: actions/checkout@v2
+      with:
+        repository: your-username/repoA # Update with the actual username and repo name
+        token: ${{ secrets.REPOA_TOKEN }} # Create a secret in the repo for authentication
+
+    - name: Deploy regional_repo
+      run: |
+        # Add your deployment steps here for repoA
+        # For example: npm install, build, deploy scripts
+
+  deploy_global_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout global_repo
+      uses: actions/checkout@v2
+      with:
+        repository: your-username/repoB # Update with the actual username and repo name
+        token: ${{ secrets.REPOB_TOKEN }} # Create a secret in the repo for authentication
+
+    - name: Deploy global_repo
+      run: |
+        # Add your deployment steps here for repoB
+        # For example: Docker build, deploy scripts
+
+# Add more jobs or steps as needed for your deployment process
