@@ -5,6 +5,7 @@ on:
     branches:
       - '!main'
       - 'feature_version1'
+      - 'Feature_branch'
 
 jobs:
   deploycodeA:
