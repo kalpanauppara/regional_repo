@@ -6,27 +6,24 @@ on:
       - '!main'
       - 'feature_version1'
 
-  jobs:
-    name: deploycodeA
+jobs:
+  deploycodeA:
     runs-on: ubuntu-latest
     strategy:
-       matrix: 
-       directory: [mycode]
-    defaults:
-      run:
-       shell: bash
+      matrix:
+        directory: [mycode]
     steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
- 
-     - name: deploycodeB
-       needs: deploycodeA
-       runs-on: ubuntu-latest
-       strategy:
-         matrix: 
-         directory: [mycode]
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+  deploycodeB:
+    needs: deploycodeA
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: [mycode]
     steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
-       with:
-         fetch-depth: 2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
