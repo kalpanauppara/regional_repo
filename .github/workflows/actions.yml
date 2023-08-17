@@ -13,8 +13,11 @@ jobs:
       matrix:
         directory: [mycode]
     steps:
-      - name: Checkout code
+      - name: Checkout code from regional_repo
         uses: actions/checkout@v2
+        with:
+          repository: https://github.com/kalpanauppara/regional_repo.git
+          ref: ${{ github.event.ref }}
 
       - name: Run test.sh in deploycodeA
         run: |
@@ -28,9 +31,11 @@ jobs:
       matrix:
         directory: [mycode]
     steps:
-      - name: Checkout code
+      - name: Checkout code from global_repo
         uses: actions/checkout@v2
         with:
+          repository: https://github.com/kalpanauppara/global_repo.git
+          ref: ${{ github.event.ref }}
           fetch-depth: 2
 
       - name: Run test.sh in deploycodeB
