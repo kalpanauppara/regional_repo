@@ -14,33 +14,13 @@ jobs:
     - name: Checkout Repo A
       uses: actions/checkout
       with:
-        repository: https://github.com/kalpanauppara/regional_repo.git
+        repository: kalpanauppara/regional_repo  # Use the repository owner/name format
         ref: feature_version1
     
     - name: Build and Deploy Repo A
       run: |
         # Add build and deployment commands for Repo A
         # For example: npm install && npm run build && deploy-script.sh
+        cd regional_repo  # Move into the repo directory
         echo "Listing files from the Source code:"
         sh test.sh
-
-
-
-
-  deploy-repo-b:
-    needs: deploy-repo-a
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout Repo B
-      uses: actions/checkout
-      with:
-        repository: https://github.com/kalpanauppara/global_repo.git
-        ref: Feature_branch
-    
-    - name: Build and Deploy Repo B
-      run: |
-        # Add build and deployment commands for Repo B
-        # For example: npm install && npm run build && deploy-script.sh
-          echo "Listing files from the Source code:"
-
