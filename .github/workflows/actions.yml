@@ -34,4 +34,5 @@ jobs:
       - name: Run test.py in deploycodeB
         run: |
           cd mysourcecode
-           test.py
+          ls -lrt
+          python test.py
