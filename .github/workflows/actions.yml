@@ -1,26 +1,24 @@
-name: Deploy Repos A and B
-
-on:
-  push:
-    branches:
-      - '!main'
-      - 'feature_version1'
-
 jobs:
-  deploy-repo-a:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout Repo A
-      uses: actions/checkout
-      with:
-        repository: kalpanauppara/regional_repo  # Use the repository owner/name format
-        ref: feature_version1
-    
-    - name: Build and Deploy Repo A
-      run: |
-        # Add build and deployment commands for Repo A
-        # For example: npm install && npm run build && deploy-script.sh
-        cd regional_repo  # Move into the repo directory
-        echo "Listing files from the Source code:"
-        sh test.sh
+ name: deploy-repo-a
+ runs-on: ubuntu-latest
+ strategy:
+     matrix: 
+       directory: [mycode]
+ defaults:
+    run:
+     shell: bash
+ steps:
+ - name: Checkout code
+   uses: actions/checkout@v2
+ 
+ name: deploy-repo-b
+  needs: deploy-repo-a
+ runs-on: ubuntu-latest
+   strategy:
+     matrix: 
+       directory: [mycode]
+   steps:
+   - name: Checkout code
+     uses: actions/checkout@v2
+     with:
+       fetch-depth: 2
