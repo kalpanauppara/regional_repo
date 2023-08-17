@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code from regional_repo
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/kalpanauppara/regional_repo.git
+          repository: kalpanauppara/regional_repo.git
           ref: ${{ github.event.ref }}
 
       - name: Run test.sh in deploycodeA
@@ -34,7 +34,7 @@ jobs:
       - name: Checkout code from global_repo
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/kalpanauppara/global_repo.git
+          repository: kalpanauppara/global_repo.git
           ref: ${{ github.event.ref }}
           fetch-depth: 2
 
