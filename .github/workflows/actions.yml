@@ -11,9 +11,9 @@ jobs:
  - name: Checkout code
    uses: actions/checkout@v2
  
- name: deploy-repo-b
-  needs: deploy-repo-a
- runs-on: ubuntu-latest
+ - name: deploy-repo-b
+   needs: deploy-repo-a
+   runs-on: ubuntu-latest
    strategy:
      matrix: 
        directory: [mycode]
