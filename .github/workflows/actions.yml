@@ -1,56 +1,45 @@
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+name: Deploy Repos A and B
+
 on:
   push:
     branches:
       - '!main'
       - 'feature_version1'
-      
-      
-
-    branches-ignore:    
-      - 'mona/octocat'
-      - 'releases/**-alpha'
-
-    tags:        
-      - v2
-      - v1.*
-
-      name: Deploy Code
-
-on:
-  push:
-    branches:
-      - main # You can adjust the branch name as needed
 
 jobs:
-  deploy_regional_repo:
+  deploy-repo-a:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout regional_repo
-      uses: actions/checkout@v2
+    - name: Checkout Repo A
+      uses: actions/checkout
       with:
-        repository: your-username/repoA # Update with the actual username and repo name
-        token: ${{ secrets.REPOA_TOKEN }} # Create a secret in the repo for authentication
-
-    - name: Deploy regional_repo
+        repository: https://github.com/kalpanauppara/regional_repo.git
+        ref: main
+    
+    - name: Build and Deploy Repo A
       run: |
-        # Add your deployment steps here for repoA
-        # For example: npm install, build, deploy scripts
+        # Add build and deployment commands for Repo A
+        # For example: npm install && npm run build && deploy-script.sh
+        echo "Listing files from the Source code:"
 
-  deploy_global_repo:
+
+
+
+  deploy-repo-b:
+    needs: deploy-repo-a
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout global_repo
-      uses: actions/checkout@v2
+    - name: Checkout Repo B
+      uses: actions/checkout
       with:
-        repository: your-username/repoB # Update with the actual username and repo name
-        token: ${{ secrets.REPOB_TOKEN }} # Create a secret in the repo for authentication
-
-    - name: Deploy global_repo
+        repository: https://github.com/kalpanauppara/global_repo.git
+        ref: main
+    
+    - name: Build and Deploy Repo B
       run: |
-        # Add your deployment steps here for repoB
-        # For example: Docker build, deploy scripts
+        # Add build and deployment commands for Repo B
+        # For example: npm install && npm run build && deploy-script.sh
+          echo "Listing files from the Source code:"
 
-# Add more jobs or steps as needed for your deployment process
