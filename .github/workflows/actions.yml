@@ -31,7 +31,7 @@ jobs:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
 
-      - name: Run test.sh in deploycodeB
+      - name: Run test.py in deploycodeB
         run: |
-          cd mycode
-          sh test.sh
+          cd mysourcecode
+           test.py
