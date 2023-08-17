@@ -16,6 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Run test.sh in deploycodeA
+        run: |
+          cd ${{ matrix.directory }}
+          sh test.sh
+
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
@@ -27,3 +32,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
+
+      - name: Run test.sh in deploycodeB
+        run: |
+          cd ${{ matrix.directory }}
+          sh test.sh
