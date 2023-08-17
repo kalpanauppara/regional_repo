@@ -7,7 +7,7 @@ on:
       - 'feature_version1'
 
 jobs:
- name: deploy-repo-a
+ name: deploycodeA
  runs-on: ubuntu-latest
  strategy:
      matrix: 
@@ -19,8 +19,8 @@ jobs:
  - name: Checkout code
    uses: actions/checkout@v2
  
- - name: deploy-repo-b
-   needs: deploy-repo-a
+ - name: deploycodeB
+   needs: deploycodeA
    runs-on: ubuntu-latest
    strategy:
      matrix: 
