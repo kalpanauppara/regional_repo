@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout
       with:
         repository: https://github.com/kalpanauppara/regional_repo.git
-        ref: main
+        ref: feature_version1
     
     - name: Build and Deploy Repo A
       run: |
@@ -35,7 +35,7 @@ jobs:
       uses: actions/checkout
       with:
         repository: https://github.com/kalpanauppara/global_repo.git
-        ref: main
+        ref: Feature_branch
     
     - name: Build and Deploy Repo B
       run: |
