@@ -5,41 +5,33 @@ on:
     branches:
       - '!main'
       - 'feature_version1'
-      - 'Feature_branch'
 
 jobs:
   deploycodeA:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: [mycode]
     steps:
       - name: Checkout code from regional_repo
         uses: actions/checkout@v2
         with:
-          repository: kalpanauppara/regional_repo.git
+          repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
       - name: Run test.sh in deploycodeA
         run: |
-          cd ${{ matrix.directory }}
+          cd mycode
           sh test.sh
 
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: [mycode]
     steps:
       - name: Checkout code from global_repo
         uses: actions/checkout@v2
         with:
-          repository: kalpanauppara/global_repo.git
-          ref: ${{ github.event.ref }}
-          fetch-depth: 2
+          repository: kalpanauppara/global_repo
+          ref: Feature_branch
 
       - name: Run test.sh in deploycodeB
         run: |
-          cd ${{ matrix.directory }}
+          cd mycode
           sh test.sh
