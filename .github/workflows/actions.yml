@@ -22,6 +22,7 @@ jobs:
         # Add build and deployment commands for Repo A
         # For example: npm install && npm run build && deploy-script.sh
         echo "Listing files from the Source code:"
+        sh test.sh
 
 
 
