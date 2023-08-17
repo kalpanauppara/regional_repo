@@ -6,7 +6,7 @@ on:
       - '!main'
       - 'feature_version1'
 
-jobs:
+  jobs:
      name: deploycodeA
      runs-on: ubuntu-latest
      strategy:
@@ -25,8 +25,8 @@ jobs:
        strategy:
          matrix: 
          directory: [mycode]
-      steps:
-       - name: Checkout code
-         uses: actions/checkout@v2
-      with:
+        steps:
+         - name: Checkout code
+           uses: actions/checkout@v2
+        with:
          fetch-depth: 2
