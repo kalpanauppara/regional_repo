@@ -1,3 +1,11 @@
+name: Deploy Repos A and B
+
+on:
+  push:
+    branches:
+      - '!main'
+      - 'feature_version1'
+
 jobs:
  name: deploy-repo-a
  runs-on: ubuntu-latest
