@@ -19,14 +19,14 @@ jobs:
      - name: Checkout code
        uses: actions/checkout@v2
  
-   - name: deploycodeB
-     needs: deploycodeA
-     runs-on: ubuntu-latest
-     strategy:
-     matrix: 
-       directory: [mycode]
-     steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
-       with:
+     - name: deploycodeB
+       needs: deploycodeA
+       runs-on: ubuntu-latest
+       strategy:
+         matrix: 
+         directory: [mycode]
+      steps:
+       - name: Checkout code
+         uses: actions/checkout@v2
+      with:
          fetch-depth: 2
