@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Show contents of content_deploy directory
-        run: ls -R content_deploy
+        run: ls -R regional_repo/content_deploy
 
   deployToSalesforce:
     needs: showContentDeploy
