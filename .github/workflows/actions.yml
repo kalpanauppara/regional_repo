@@ -17,7 +17,7 @@ jobs:
           ref: ${{ github.event.ref }}
 
       - name: Copy test.sh from Repo A to content_deploy
-        run: cp mycode/test.sh content_deploy/
+        run: cp -r mycode/test.sh content_deploy/
 
   deploycodeB:
     needs: deploycodeA
@@ -30,7 +30,7 @@ jobs:
           ref: Feature_branch
 
       - name: Copy test.py from Repo B to content_deploy
-        run: cp mysourcecode/test.py content_deploy/
+        run: cp -r mysourcecode/test.py content_deploy/
 
   showContentDeploy:
     needs: [deploycodeA, deploycodeB]
