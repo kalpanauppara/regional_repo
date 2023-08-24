@@ -16,12 +16,6 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
-      - name: Create a temporary directory for Repo A
-        run: mkdir content_deploy_repoA
-
-      - name: Copy test.sh from Repo A to content_deploy_repoA
-        run: cp mycode/test.sh content_deploy_repoA/
-
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
@@ -31,12 +25,6 @@ jobs:
         with:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
-      
-      - name: Create a temporary directory for Repo B
-        run: mkdir content_deploy_repoB
-
-      - name: Copy test.py from Repo B to content_deploy_repoB
-        run: cp mysourcecode/test.py content_deploy_repoB/
 
   mergeContent:
     needs: [deploycodeA, deploycodeB]
@@ -46,10 +34,10 @@ jobs:
         run: mkdir content_deploy
 
       - name: Copy content from Repo A to merged content directory
-        run: cp -r content_deploy_repoA/. content_deploy/
+        run: cp -r kalpanauppara/regional_repo/mycode/* content_deploy/
 
       - name: Copy content from Repo B to merged content directory
-        run: cp -r content_deploy_repoB/. content_deploy/
+        run: cp -r kalpanauppara/global_repo/mysourcecode/* content_deploy/
 
   deployToSalesforce:
     needs: mergeContent
