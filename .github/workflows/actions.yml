@@ -20,7 +20,11 @@ jobs:
         run: mkdir content_deploy
 
       - name: Copy test.sh from Repo A to content_deploy
-        run: cp mycode/test.sh content_deploy/
+        run: |
+            cp mycode/test.sh content_deploy/
+            cd content_deploy
+            ls -lrt
+        
 
   deploycodeB:
     needs: deploycodeA
@@ -38,7 +42,9 @@ jobs:
       - name: Copy test.py from Repo B to content_deploy
         run: |
             cp mysourcecode/test.py content_deploy/
-            ls -R content_deploy
+            cd content_deploy
+            ls -lrt
+            
 
   deployToSalesforce:
     runs-on: ubuntu-latest  # Removed the 'needs' dependency
