@@ -29,28 +29,16 @@ jobs:
     needs: checkoutRepos
     steps:
       - name: Create the content_deploy directory
-        run: |
-            mkdir -p shared_workspace/content_deploy
-            cd content_deploy
-            ls -lrt
+        run: mkdir -p shared_workspace/content_deploy
 
       - name: Copy test.sh from Repo A to content_deploy
-        run: |
-              cp shared_workspace/regional_repo/mycode/test.sh shared_workspace/content_deploy/
-              cd content_deploy
-              ls -lrt
+        run: cp shared_workspace/regional_repo/mycode/test.sh shared_workspace/content_deploy/
 
       - name: Copy test.py from Repo B to content_deploy
-        run: |
-            cp shared_workspace/global_repo/mysourcecode/test.py shared_workspace/content_deploy/
-            cd content_deploy
-            ls -lrt
+        run: cp shared_workspace/global_repo/mysourcecode/test.py shared_workspace/content_deploy/
 
       - name: List contents of content_deploy
-        run: |
-            ls -R shared_workspace/content_deploy
-            cd content_deploy
-            ls -lrt
+        run: ls -R shared_workspace/content_deploy
 
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
