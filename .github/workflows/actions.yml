@@ -16,11 +16,11 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
-      - name: Create a temporary directory
-        run: mkdir content_deploy
+      - name: Create a temporary directory for Repo A
+        run: mkdir content_deploy_repoA
 
-      - name: Copy test.sh from Repo A to content_deploy
-        run: cp mycode/test.sh content_deploy/
+      - name: Copy test.sh from Repo A to content_deploy_repoA
+        run: cp mycode/test.sh content_deploy_repoA/
 
   deploycodeB:
     needs: deploycodeA
@@ -32,14 +32,30 @@ jobs:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
       
-      - name: Copy test.py from Repo B to content_deploy
-        run: cp mysourcecode/test.py ../deploycodeA/content_deploy/
+      - name: Create a temporary directory for Repo B
+        run: mkdir content_deploy_repoB
+
+      - name: Copy test.py from Repo B to content_deploy_repoB
+        run: cp mysourcecode/test.py content_deploy_repoB/
+
+  mergeContent:
+    needs: [deploycodeA, deploycodeB]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a merged content directory
+        run: mkdir content_deploy
+
+      - name: Copy content from Repo A to merged content directory
+        run: cp -r content_deploy_repoA/* content_deploy/
+
+      - name: Copy content from Repo B to merged content directory
+        run: cp -r content_deploy_repoB/* content_deploy/
 
   deployToSalesforce:
-    needs: [deploycodeA, deploycodeB]
+    needs: mergeContent
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
           # Deploy the merged content from content_deploy to Salesforce
-          # Example: sfdx force:source:deploy -p deploycodeA/content_deploy/ -u YourSalesforceAlias
+          # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
