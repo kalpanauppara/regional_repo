@@ -16,9 +16,6 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
-      - name: Create a temporary directory for Repo A
-        run: mkdir content_deploy
-
       - name: Copy test.sh from Repo A to content_deploy
         run: cp mycode/test.sh content_deploy/
 
@@ -31,9 +28,6 @@ jobs:
         with:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
-
-      - name: Create a temporary directory for Repo B
-        run: mkdir content_deploy
 
       - name: Copy test.py from Repo B to content_deploy
         run: cp mysourcecode/test.py content_deploy/
@@ -51,5 +45,5 @@ jobs:
     steps:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
-          # Deploy the merged content from content_deploy to Salesforce
+          # Deploy the content from content_deploy to Salesforce
           # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
