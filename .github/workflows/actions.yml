@@ -36,7 +36,10 @@ jobs:
         run: mkdir content_deploy_repoB
 
       - name: Copy test.py from Repo B to content_deploy_repoB
-        run: cp mysourcecode/test.py content_deploy_repoB/
+        run: | 
+          cp mysourcecode/test.py content_deploy_repoB/
+          cd content_deploy_repoB/
+          ls -lrt
 
   mergeContent:
     needs: [deploycodeA, deploycodeB]
@@ -46,11 +49,11 @@ jobs:
         run: mkdir content_deploy
 
       - name: Copy content from Repo A to merged content directory
-        run: cp -r content_deploy_repoA/* content_deploy/
+        run: cp -r content_deploy_repoA/test.sh content_deploy/
         
 
       - name: Copy content from Repo B to merged content directory
-        run: cp -r content_deploy_repoB/* content_deploy/
+        run: cp -r content_deploy_repoB/test.py content_deploy/
 
   deployToSalesforce:
     needs: mergeContent
