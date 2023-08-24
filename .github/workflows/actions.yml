@@ -41,8 +41,7 @@ jobs:
             ls -R content_deploy
 
   deployToSalesforce:
-    needs: showContentDeploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Removed the 'needs' dependency
     steps:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
