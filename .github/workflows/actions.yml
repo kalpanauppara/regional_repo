@@ -15,14 +15,14 @@ jobs:
         with:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
-          path: shared_workspace/regional_repo
+          path: shared_workspace
 
       - name: Checkout code from Repo B
         uses: actions/checkout@v2
         with:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
-          path: shared_workspace/global_repo
+          path: shared_workspace
 
   deployToSalesforce:
     runs-on: ubuntu-latest
@@ -32,10 +32,10 @@ jobs:
         run: mkdir -p shared_workspace/content_deploy
 
       - name: Copy test.sh from Repo A to content_deploy
-        run: cp shared_workspace/regional_repo/mycode/test.sh shared_workspace/content_deploy/
+        run: cp shared_workspace/mycode/test.sh shared_workspace/content_deploy/
 
       - name: Copy test.py from Repo B to content_deploy
-        run: cp shared_workspace/global_repo/mysourcecode/test.py shared_workspace/content_deploy/
+        run: cp shared_workspace/mysourcecode/test.py shared_workspace/content_deploy/
 
       - name: List contents of content_deploy
         run: ls -R shared_workspace/content_deploy
