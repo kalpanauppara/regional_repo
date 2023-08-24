@@ -16,8 +16,11 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
+      - name: Create the content_deploy directory for Repo A
+        run: mkdir regional_repo/content_deploy
+
       - name: Copy test.sh from Repo A to content_deploy
-        run: cp -r mycode/test.sh content_deploy/
+        run: cp regional_repo/mycode/test.sh regional_repo/content_deploy/
 
   deploycodeB:
     needs: deploycodeA
@@ -29,15 +32,21 @@ jobs:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
 
+      - name: Create the content_deploy directory for Repo B
+        run: mkdir global_repo/content_deploy
+
       - name: Copy test.py from Repo B to content_deploy
-        run: cp -r mysourcecode/test.py content_deploy/
+        run: cp global_repo/mysourcecode/test.py global_repo/content_deploy/
 
   showContentDeploy:
     needs: [deploycodeA, deploycodeB]
     runs-on: ubuntu-latest
     steps:
-      - name: Show contents of content_deploy directory
-        run: ls -R content_deploy
+      - name: Show contents of content_deploy directory for Repo A
+        run: ls -R regional_repo/content_deploy
+
+      - name: Show contents of content_deploy directory for Repo B
+        run: ls -R global_repo/content_deploy
 
   deployToSalesforce:
     needs: showContentDeploy
@@ -46,4 +55,5 @@ jobs:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
           # Deploy the content from content_deploy to Salesforce
-          # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
+          # Example: sfdx force:source:deploy -p regional_repo/content_deploy/ -u YourSalesforceAlias
+          # Example: sfdx force:source:deploy -p global_repo/content_deploy/ -u YourSalesforceAlias
