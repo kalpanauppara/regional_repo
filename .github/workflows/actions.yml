@@ -36,14 +36,9 @@ jobs:
         run: mkdir content_deploy
 
       - name: Copy test.py from Repo B to content_deploy
-        run: cp mysourcecode/test.py content_deploy/
-
-  showContentDeploy:
-    needs: [deploycodeA, deploycodeB]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Show contents of content_deploy directory
-        run: ls -R content_deploy
+        run: |
+            cp mysourcecode/test.py content_deploy/
+            ls -R content_deploy
 
   deployToSalesforce:
     needs: showContentDeploy
