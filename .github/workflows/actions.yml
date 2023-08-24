@@ -16,8 +16,11 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
+      - name: Create the content_deploy directory
+        run: mkdir content_deploy
+
       - name: Copy test.sh from Repo A to content_deploy
-        run: cp -r mycode/test.sh content_deploy/
+        run: cp mycode/test.sh content_deploy/
 
   deploycodeB:
     needs: deploycodeA
@@ -29,8 +32,11 @@ jobs:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
 
+      - name: Create the content_deploy directory
+        run: mkdir content_deploy
+
       - name: Copy test.py from Repo B to content_deploy
-        run: cp -r mysourcecode/test.py content_deploy/
+        run: cp mysourcecode/test.py content_deploy/
 
   showContentDeploy:
     needs: [deploycodeA, deploycodeB]
