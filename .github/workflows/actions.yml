@@ -15,13 +15,13 @@ jobs:
         with:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
-          path: repoA
+          path: ${{ github.workspace }}/repoA
 
       - name: Create a temporary directory for Repo A
-        run: mkdir content_deploy_repoA
+        run: mkdir ${{ github.workspace }}/content_deploy_repoA
 
       - name: Copy test.sh from Repo A to content_deploy_repoA
-        run: cp repoA/mycode/test.sh content_deploy_repoA/
+        run: cp ${{ github.workspace }}/repoA/mycode/test.sh ${{ github.workspace }}/content_deploy_repoA/
 
   deploycodeB:
     needs: deploycodeA
@@ -32,26 +32,26 @@ jobs:
         with:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
-          path: repoB
+          path: ${{ github.workspace }}/repoB
 
       - name: Create a temporary directory for Repo B
-        run: mkdir content_deploy_repoB
+        run: mkdir ${{ github.workspace }}/content_deploy_repoB
 
       - name: Copy test.py from Repo B to content_deploy_repoB
-        run: cp repoB/mysourcecode/test.py content_deploy_repoB/
+        run: cp ${{ github.workspace }}/repoB/mysourcecode/test.py ${{ github.workspace }}/content_deploy_repoB/
 
   mergeContent:
     needs: [deploycodeA, deploycodeB]
     runs-on: ubuntu-latest
     steps:
       - name: Create a merged content directory
-        run: mkdir content_deploy
+        run: mkdir ${{ github.workspace }}/content_deploy
 
       - name: Copy content from Repo A to merged content directory
-        run: cp -r repoA/mycode/* content_deploy/
+        run: cp -r ${{ github.workspace }}/content_deploy_repoA/* ${{ github.workspace }}/content_deploy/
 
       - name: Copy content from Repo B to merged content directory
-        run: cp -r repoB/mysourcecode/* content_deploy/
+        run: cp -r ${{ github.workspace }}/content_deploy_repoB/* ${{ github.workspace }}/content_deploy/
 
   deployToSalesforce:
     needs: mergeContent
@@ -60,4 +60,4 @@ jobs:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
           # Deploy the merged content from content_deploy to Salesforce
-          # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
+          # Example: sfdx force:source:deploy -p ${{ github.workspace }}/content_deploy/ -u YourSalesforceAlias
