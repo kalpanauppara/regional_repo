@@ -1,0 +1,41 @@
+name: Deploy Repos A and B
+
+on:
+  pull_request:
+      types:
+      - labeled
+      branches:
+      - '!main'
+      - 'feature_version1'
+
+jobs:
+  deploycodeA:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from regional_repo
+        if: contains(github.event.issue.labels.*.name, 'trigger-deploy')
+        uses: actions/checkout@v2
+        with:
+          repository: kalpanauppara/regional_repo
+          ref: ${{ github.event.ref }}
+
+      - name: Run test.sh in deploycodeA
+        run: |
+          cd mycode
+          sh test.sh
+
+  deploycodeB:
+    needs: deploycodeA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from global_repo
+        uses: actions/checkout@v2
+        with:
+          repository: kalpanauppara/global_repo
+          ref: Feature_branch
+
+      - name: Run test.py in deploycodeB
+        run: |
+          cd mysourcecode
+          ls -lrt
+          python test.py
