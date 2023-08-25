@@ -16,24 +16,7 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
 
-      - name: Install Salesforce CLI
-        run: |
-          # Install Salesforce CLI
-          curl -s https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-cli-linux-x64.tar.xz | tar xJf -
-          sudo mv sfdx /usr/local/bin/
-          sfdx --version
-          # Install plugins or authenticate here as needed
-          # Example: sfdx plugins:install sfdx-plugin-name
-
-      - name: Create the content_deploy directory for Repo A
-        run: mkdir content_deploy
-
-      - name: Copy test.sh from Repo A to content_deploy
-        run: |
-            cp mycode/test.sh content_deploy/
-            cd content_deploy
-            ls -lrt
-
+      
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
