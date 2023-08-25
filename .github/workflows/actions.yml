@@ -47,8 +47,6 @@ jobs:
             cp mysourcecode/test.py repoB_deploy/
             cd repoB_deploy
             ls -lrt
-            cd mysourcecode
-            ls -lrt
             pwd
 
       - name: List contents of repoB_deploy
