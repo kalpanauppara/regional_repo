@@ -46,6 +46,7 @@ jobs:
         run: |
             cp mysourcecode/test.py repoB_deploy/
             cd repoB_deploy
+            cd $GIT_WORKSPACE && ls -lrt
             ls -lrt
             pwd
 
