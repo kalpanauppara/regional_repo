@@ -24,8 +24,6 @@ jobs:
             cp mycode/test.sh repoA_deploy/
             cd repoA_deploy
             ls -lrt
-            cd mycode
-            ls -lrt
             pwd
           
       - name: List contents of repoA_deploy
@@ -65,8 +63,8 @@ jobs:
       - name: Merge contents into content_deploy
         run: |
             mkdir -p content_deploy
-            cp repoA_deploy/mycode/test.sh content_deploy/
-            cp -r repoB_deploy/. content_deploy/
+            cp repoA_deploy/test.sh content_deploy/
+            cp repoB_deploy/test.py content_deploy/
             ls -lrt content_deploy
 
       - name: List contents of content_deploy
