@@ -15,8 +15,16 @@ jobs:
         with:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
-
       
+      - name: Create the content_deploy directory for Repo A
+        run: mkdir content_deployA
+
+      - name: Copy test.sh from Repo A to content_deployA
+        run: |
+            cp mycode/test.sh content_deployA/
+            cd content_deployA
+            ls -lrt
+
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
@@ -28,17 +36,27 @@ jobs:
           ref: Feature_branch
 
       - name: Create the content_deploy directory for Repo B
-        run: mkdir content_deploy
+        run: mkdir content_deployB
 
-      - name: Copy test.py from Repo B to content_deploy
+      - name: Copy test.py from Repo B to content_deployB
         run: |
-            cp mysourcecode/test.py content_deploy/
-            cd content_deploy
+            cp mysourcecode/test.py content_deployB/
+            cd content_deployB
             ls -lrt
 
-  deployToSalesforce:
+  mergeAndDeploy:
+    needs:
+      - deploycodeA
+      - deploycodeB
     runs-on: ubuntu-latest
     steps:
+      - name: Merge contents into content_deploy
+        run: |
+            mkdir content_deploy
+            cp -r content_deployA/* content_deploy/
+            cp -r content_deployB/* content_deploy/
+            ls -lrt content_deploy
+
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
           # Deploy the content from content_deploy to Salesforce
