@@ -62,6 +62,9 @@ jobs:
       - name: Merge contents into content_deploy
         run: |
             mkdir -p content_deploy
+            cd content_deploy
+            ls -lrt
+            
             cp repoA_deploy/test.sh content_deploy/
             cp repoB_deploy/test.py content_deploy/
             ls -lrt content_deploy
