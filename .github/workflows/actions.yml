@@ -50,4 +50,4 @@ jobs:
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
           # Deploy the content from content_deploy to Salesforce
-          # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
+          sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
