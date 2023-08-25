@@ -7,7 +7,7 @@ on:
       - 'feature_version1'
 
 jobs:
-  checkoutRepos:
+  deploycodeA:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from Repo A
@@ -15,47 +15,39 @@ jobs:
         with:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
-          path: shared_workspace
+          
+      - name: Create the content_deploy directory for Repo A
+        run: mkdir content_deploy
 
+      - name: Copy test.sh from Repo A to content_deploy
+        run: |
+            cp mycode/test.sh content_deploy/
+            cd content_deploy
+            ls -lrt
+        
+  deploycodeB:
+    needs: deploycodeA
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout code from Repo B
         uses: actions/checkout@v2
         with:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
-          path: shared_workspace
 
-      - name: List contents of mycode and mysourcecode before copying
+      - name: Create the content_deploy directory for Repo B
+        run: mkdir content_deploy
+
+      - name: Copy test.py from Repo B to content_deploy
         run: |
-            ls -R shared_workspace/mycode
-            ls -R shared_workspace/mysourcecode
-
-      - name: Copy test.sh from Repo A to content_deploy
-        run: cp shared_workspace/mycode/test.sh shared_workspace/content_deploy/
-
-      - name: Copy test.py from Repo B to content_deploy
-        run: cp shared_workspace/mysourcecode/test.py shared_workspace/content_deploy/
-
-      - name: List contents of content_deploy after copying
-        run: ls -R shared_workspace/content_deploy
-
-
+            cp mysourcecode/test.py content_deploy/
+            cd content_deploy
+            ls -lrt
+            
   deployToSalesforce:
-    runs-on: ubuntu-latest
-    needs: checkoutRepos
+    runs-on: ubuntu-latest  # Removed the 'needs' dependency
     steps:
-      - name: Create the content_deploy directory
-        run: mkdir -p shared_workspace/content_deploy
-
-      - name: Copy test.sh from Repo A to content_deploy
-        run: cp shared_workspace/mycode/test.sh shared_workspace/content_deploy/
-
-      - name: Copy test.py from Repo B to content_deploy
-        run: cp shared_workspace/mysourcecode/test.py shared_workspace/content_deploy/
-
-      - name: List contents of content_deploy
-        run: ls -R shared_workspace/content_deploy
-
       - name: Deploy to Salesforce (replace with your deployment command)
         run: |
-          # Deploy the content from shared_workspace/content_deploy to Salesforce
-          # Example: sfdx force:source:deploy -p shared_workspace/content_deploy/ -u YourSalesforceAlias
+          # Deploy the content from content_deploy to Salesforce
+          # Example: sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
