@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '!main'
-      - 'feature_version1'
+      - '!feature_version1'
 
 jobs:
   deploycodeA:
