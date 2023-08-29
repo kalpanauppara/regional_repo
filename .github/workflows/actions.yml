@@ -71,6 +71,11 @@ jobs:
         tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
         echo 'export PATH=$PWD/sfdx-cli:$PATH' >> $GITHUB_ENV
         source $GITHUB_ENV
+        # Debugging: Check the PATH and Salesforce CLI version
+        echo "Checking PATH environment variable"
+        echo $PATH
+        which sfdx
+        sfdx --version
 
     - name: Authenticate with Salesforce
       run: |
