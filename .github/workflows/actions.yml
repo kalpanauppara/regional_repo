@@ -66,22 +66,20 @@ jobs:
         run: echo "test=repoB_deploy/test.py" >> ${{ github.workspace }}/.outputs
 
   mergeAndDeploy:
-      needs:
+    needs:
       - deploycodeA
       - deploycodeB
-      runs-on: ubuntu-latest
-      steps:
+    runs-on: ubuntu-latest
+    steps:
       - name: Create the content_deploy directory
         run: mkdir content_deploy
 
-      - name: Copy test.sh from repoA_deploy
-        run: |
-            cp ${{ needs.deploycodeA.outputs.test }} content_deploy/test.sh
-          
-      - name: Copy test.py from repoB_deploy
-        run: |
-            cp ${{ needs.deploycodeB.outputs.test }} content_deploy/test.py
-            
+      - name: Copy test.sh from repoA_deploy to content_deploy
+        run: cp "${{ github.workspace }}/repoA_deploy/test.sh" content_deploy/
+
+      - name: Copy test.py from repoB_deploy to content_deploy
+        run: cp "${{ github.workspace }}/repoB_deploy/test.py" content_deploy/
+
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
 
