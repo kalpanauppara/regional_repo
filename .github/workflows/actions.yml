@@ -66,11 +66,11 @@ jobs:
         run: echo "test=repoB_deploy/test.py" >> ${{ github.workspace }}/.outputs
 
   mergeAndDeploy:
-    needs:
+      needs:
       - deploycodeA
       - deploycodeB
-    runs-on: ubuntu-latest
-    steps:
+      runs-on: ubuntu-latest
+      steps:
       - name: Create the content_deploy directory
         run: mkdir content_deploy
 
