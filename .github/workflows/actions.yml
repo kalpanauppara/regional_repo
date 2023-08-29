@@ -56,33 +56,28 @@ jobs:
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
 
-  
   deploy-to-salesforce:
     runs-on: ubuntu-latest
     needs:
-      mergeAndDeploy
+    - mergeAndDeploy
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Install Salesforce CLI
-        run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-          echo 'export PATH=$PWD/sfdx-cli:$PATH' >> $GITHUB_ENV
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      
-      - name: Authenticate with Salesforce
-        run: |
-          # Authenticate with Salesforce using the connected app credentials
-          sfdx force:auth:jwt:grant -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} -f ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}  -i ${{ secrets.SALESFORCE_JWT_SECRET_KEY }} -s ${{ secrets.SALESFORCE_CONSUMER_KEY }} 
-          if: steps.setup-env.outputs.setup-complete == 'true'
+    - name: Install Salesforce CLI
+      run: |
+        wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+        mkdir sfdx-cli
+        tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+        echo 'export PATH=$PWD/sfdx-cli:$PATH' >> $GITHUB_ENV
+        source $GITHUB_ENV
 
+    - name: Authenticate with Salesforce
+      run: |
+        # Authenticate with Salesforce using the connected app credentials
+        sfdx force:auth:jwt:grant -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} -f ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}  -i ${{ secrets.SALESFORCE_JWT_SECRET_KEY }} -s ${{ secrets.SALESFORCE_CONSUMER_KEY }}
 
-      - name: Deploy to Salesforce
-        run: |
-          # Deploy to Salesforce
-          sfdx force:source:deploy -p content_deploy/ -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
-
-
+    - name: Deploy to Salesforce
+      run: |
+        # Deploy to Salesforce
+        sfdx force:source:deploy -p content_deploy/ -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
