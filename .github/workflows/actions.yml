@@ -59,7 +59,8 @@ jobs:
   
   deploy-to-salesforce:
     runs-on: ubuntu-latest
-
+    needs:
+      mergeAndDeploy
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -80,5 +81,5 @@ jobs:
       - name: Deploy to Salesforce
         run: |
           # Deploy to Salesforce
-          sfdx force:source:deploy -p content_deploy/ -u ${secrets.SALESFORCE_DEVHUB_USERNAME}
+          sfdx force:source:deploy -p content_deploy/ -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
 
