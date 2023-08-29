@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - '!main'
-      - '!feature_version1'
+      - 'feature_version1'
 
 jobs:
   deploycodeA:
     runs-on: ubuntu-latest
+    outputs:
+      test: ${{ steps.copyA.outputs.test }}
     steps:
       - name: Checkout code from Repo A
         uses: actions/checkout@v2
@@ -29,9 +31,15 @@ jobs:
       - name: List contents of repoA_deploy
         run: ls -lrt
 
+      - name: Set job output for test.sh
+        id: copyA
+        run: echo "test=repoA_deploy/test.sh" >> ${{ github.workspace }}/.outputs
+
   deploycodeB:
     needs: deploycodeA
     runs-on: ubuntu-latest
+    outputs:
+      test: ${{ steps.copyB.outputs.test }}
     steps:
       - name: Checkout code from Repo B
         uses: actions/checkout@v2
@@ -46,12 +54,16 @@ jobs:
         run: |
             cp mysourcecode/test.py repoB_deploy/
             cd repoB_deploy
-            cd $GIT_WORKSPACE && ls -lrt
+            cd $GITHUB_WORKSPACE && ls -lrt
             ls -lrt
             pwd
 
       - name: List contents of repoB_deploy
         run: ls -lrt
+
+      - name: Set job output for test.py
+        id: copyB
+        run: echo "test=repoB_deploy/test.py" >> ${{ github.workspace }}/.outputs
 
   mergeAndDeploy:
     needs:
@@ -59,16 +71,17 @@ jobs:
       - deploycodeB
     runs-on: ubuntu-latest
     steps:
-      - name: Merge contents into content_deploy
-        run: |
-            mkdir -p content_deploy
-            cd content_deploy
-            ls -lrt
-            
-            cp repoA_deploy/test.sh content_deploy/
-            cp repoB_deploy/test.py content_deploy/
-            ls -lrt content_deploy
+      - name: Create the content_deploy directory
+        run: mkdir content_deploy
 
+      - name: Copy test.sh from repoA_deploy
+        run: |
+            cp ${{ needs.deploycodeA.outputs.test }} content_deploy/
+          
+      - name: Copy test.py from repoB_deploy
+        run: |
+            cp ${{ needs.deploycodeB.outputs.test }} content_deploy/
+            
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
 
