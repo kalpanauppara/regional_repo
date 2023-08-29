@@ -9,8 +9,6 @@ on:
 jobs:
   deploycodeA:
     runs-on: ubuntu-latest
-    outputs:
-      test: ${{ steps.copyA.outputs.test }}
     steps:
       - name: Checkout code from Repo A
         uses: actions/checkout@v2
@@ -18,28 +16,15 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
       
-      - name: Create the repoA_deploy directory
-        run: mkdir repoA_deploy
+      # ... other steps to prepare Repo A code ...
 
-      - name: Copy test.sh from Repo A to repoA_deploy
-        run: |
-            cp mycode/test.sh repoA_deploy/
-            cd repoA_deploy
-            ls -lrt
-            pwd
-          
-      - name: List contents of repoA_deploy
-        run: ls -lrt
-
-      - name: Set job output for test.sh
-        id: copyA
-        run: echo "test=repoA_deploy/test.sh" >> ${{ github.workspace }}/.outputs
+      - name: Set output for test.sh
+        id: set-output-test-sh
+        run: echo "::set-output name=test::$(cat mycode/test.sh)"
 
   deploycodeB:
-    needs: deploycodeA
     runs-on: ubuntu-latest
-    outputs:
-      test: ${{ steps.copyB.outputs.test }}
+    needs: deploycodeA
     steps:
       - name: Checkout code from Repo B
         uses: actions/checkout@v2
@@ -47,38 +32,26 @@ jobs:
           repository: kalpanauppara/global_repo
           ref: Feature_branch
 
-      - name: Create the repoB_deploy directory
-        run: mkdir repoB_deploy
+      # ... other steps to prepare Repo B code ...
 
-      - name: Copy test.py from Repo B to repoB_deploy
-        run: |
-            cp mysourcecode/test.py repoB_deploy/
-            cd repoB_deploy
-            cd $GITHUB_WORKSPACE && ls -lrt
-            ls -lrt
-            pwd
-
-      - name: List contents of repoB_deploy
-        run: ls -lrt
-
-      - name: Set job output for test.py
-        id: copyB
-        run: echo "test=repoB_deploy/test.py" >> ${{ github.workspace }}/.outputs
+      - name: Set output for test.py
+        id: set-output-test-py
+        run: echo "::set-output name=test::$(cat mysourcecode/test.py)"
 
   mergeAndDeploy:
+    runs-on: ubuntu-latest
     needs:
       - deploycodeA
       - deploycodeB
-    runs-on: ubuntu-latest
     steps:
       - name: Create the content_deploy directory
         run: mkdir content_deploy
 
-      - name: Copy test.sh from repoA_deploy to content_deploy
-        run: cp "${{ github.workspace }}/repoA_deploy/test.sh" content_deploy/
+      - name: Copy test.sh from Repo A to content_deploy
+        run: echo "${{ needs.deploycodeA.outputs.test }}" > content_deploy/test.sh
 
-      - name: Copy test.py from repoB_deploy to content_deploy
-        run: cp "${{ github.workspace }}/repoB_deploy/test.py" content_deploy/
+      - name: Copy test.py from Repo B to content_deploy
+        run: echo "${{ needs.deploycodeB.outputs.test }}" > content_deploy/test.py
 
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
