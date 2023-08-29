@@ -76,11 +76,11 @@ jobs:
 
       - name: Copy test.sh from repoA_deploy
         run: |
-            cp ${{ needs.deploycodeA.outputs.test }} content_deploy/
+            cp ${{ needs.deploycodeA.outputs.test }} content_deploy/test.sh
           
       - name: Copy test.py from repoB_deploy
         run: |
-            cp ${{ needs.deploycodeB.outputs.test }} content_deploy/
+            cp ${{ needs.deploycodeB.outputs.test }} content_deploy/test.py
             
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
