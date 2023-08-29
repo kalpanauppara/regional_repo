@@ -56,7 +56,29 @@ jobs:
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
 
-      - name: Deploy to Salesforce (replace with your deployment command)
+  
+  deploy-to-salesforce:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Salesforce CLI
         run: |
-          # Deploy the content from content_deploy to Salesforce
-          sfdx force:source:deploy -p content_deploy/ -u YourSalesforceAlias
+          # Install Salesforce CLI
+          curl -s https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJf -
+          sudo mv sfdx /usr/local/bin/
+        if: steps.setup-env.outputs.setup-complete == 'true'
+
+      - name: Authenticate with Salesforce
+        run: |
+          # Authenticate with Salesforce (use your own authentication method)
+          sfdx force:auth:web:login -a myorg
+        if: steps.setup-env.outputs.setup-complete == 'true'
+
+      - name: Deploy to Salesforce
+        run: |
+          # Deploy to Salesforce
+          sfdx force:source:deploy -p content_deploy/ -u ${secrets.SALESFORCE_DEVHUB_USERNAME}
+
