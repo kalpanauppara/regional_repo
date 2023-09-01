@@ -59,17 +59,22 @@ jobs:
   deploy-to-salesforce:
     runs-on: ubuntu-latest
     needs:
-    - mergeAndDeploy
+      - mergeAndDeploy
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-       
-    - name: Use Salesforce CLI container
-      uses: salesforcecli/action-exec@v1
-      with:
-          command: sfdx --version
-    
+    - name: Install SFDX CLI
+      run: npm install sfdx-cli --global
+      
+    - name: Install SFDX-Scanner
+      run: sfdx plugins:install @salesforce/sfdx-scanner
+
+    - name: Install SFDX-Git-Delta plugin
+      run: |
+        echo y | sfdx plugin:install sfdx-git-delta
+        sfdx plugins
+
     - name: Authenticate with Salesforce
       run: |
         # Authenticate with Salesforce using the connected app credentials
