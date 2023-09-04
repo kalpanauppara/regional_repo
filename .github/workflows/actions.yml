@@ -1,10 +1,15 @@
 name: Deploy Repos A and B
 
+# Workflow triggers
 on:
-  push:
+  pull_request:
+    types: 
+      - labeled
     branches:
-      - '!main'
-      - 'feature_version1'
+      - feature_version2
+    paths-ignore:
+      - "**/README.md"
+      
 
 jobs:
   deploycodeA:
