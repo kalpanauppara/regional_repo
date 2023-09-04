@@ -43,6 +43,7 @@ jobs:
     needs:
       - deploycodeA
       - deploycodeB
+    if: ((startswith(github.head_ref,'feature_version1')) && (github.event_name == 'pull_request') && (github.event.label.name == 'Ready for Deploy'))
     steps:
       - name: Create the content_deploy directory
         run: mkdir content_deploy
