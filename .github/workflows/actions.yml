@@ -6,7 +6,7 @@ on:
     types: 
       - labeled
     branches:
-      - feature_version2
+      - feature_version1
     paths-ignore:
       - "**/README.md"
       
