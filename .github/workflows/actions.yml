@@ -6,7 +6,7 @@ on:
     types: 
       - labeled
     branches:
-      - feature_version1
+      - feature_version2
     paths-ignore:
       - "**/README.md"
       
@@ -48,7 +48,7 @@ jobs:
     needs:
       - deploycodeA
       - deploycodeB
-    if: ((startswith(github.head_ref,'feature_version2')) && (github.event_name == 'pull_request') && (github.event.label.name == 'Ready for Deploy'))
+    if: ((startswith(github.head_ref,'feature_version1')) && (github.event_name == 'pull_request') && (github.event.label.name == 'Ready for Deploy'))
     steps:
       - name: Create the content_deploy directory
         run: mkdir content_deploy
