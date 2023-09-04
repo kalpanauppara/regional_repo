@@ -56,10 +56,11 @@ jobs:
       - name: List contents of content_deploy
         run: ls -lrt content_deploy
 
-  deploy-to-salesforce:
+  deploy-to-salesforce:  
     runs-on: ubuntu-latest
     needs:
       - mergeAndDeploy
+    if: ((startswith(github.head_ref,'feature_version1')) && (github.event_name == 'pull_request') && (github.event.label.name == 'Ready for Deploy'))
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
