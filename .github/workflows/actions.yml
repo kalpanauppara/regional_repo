@@ -21,7 +21,7 @@ jobs:
           repository: kalpanauppara/regional_repo
           ref: ${{ github.event.ref }}
       
-      # ... other steps to prepare Repo A code ...
+      # ... other steps to prepare Repo A code AA ...
 
       - name: Set output for test.sh
         id: set-output-test-sh
